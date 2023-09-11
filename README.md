@@ -6,4 +6,4 @@ and determine when the optimal time to pass the ball is.
 This project is being developed for submission to the NFL Data Bowl. 
 
 Team members:
-Dr. Lichun Li, Nicholas Herbst, Souhail Marnaoui, Andrew young, Olivia, Alex Trbovic
+Dr. Lichun Li, Nicholas Herbst, Souhail Marnaoui, Andrew young, Alex Trbovic
