@@ -1,7 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
+import FootballField from './components/footballField';
 
 function App() {
+
+  const data = {};
+
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +23,8 @@ function App() {
           Hello World
         </a>
       </header>
+      <h1>Football Field</h1>
+      <FootballField data={data} />
     </div>
   );
 }
