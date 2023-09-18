@@ -1,37 +1,37 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 
-function FootballField() {
+function FootballField({ frames }) {
   const svgRef = useRef();
-  const [data, setData] = useState({ home: [], guest: [], football: {} });
+  const [currentFrame, setCurrentFrame] = useState(0);
 
-  // Fetch the data
+  // Cycle through the frames to animate the visualization
   useEffect(() => {
-    d3.csv("/playersData.csv").then((loadedData) => {
-      let homeData = [];
-      let guestData = [];
-      let footballData = {};
+    if (!frames || frames.length === 0) return;
 
-      loadedData.forEach(d => {
-        d.x = +d.x; // Convert to number
-        d.y = +d.y; // Convert to number
+    const interval = setInterval(() => {
+      setCurrentFrame((prevFrame) => (prevFrame + 1) % frames.length);
+    }, 1000);  // adjust timing as necessary to speed up or slow down the animation
 
-        if (d.team === "home") homeData.push(d);
-        else if (d.team === "guest") guestData.push(d);
-        else if (d.team === "football") footballData = d;
-      });
+    return () => clearInterval(interval);
+  }, [frames]);
 
-      setData({ home: homeData, guest: guestData, football: footballData });
-    });
-  }, []);
+  //testing purposes
+  //console.log(frames);
 
+  
   // Visualize the data
   useEffect(() => {
+    if (!frames || frames.length === 0) return;
+
+    const frameData = frames[currentFrame];
     const svg = d3.select(svgRef.current);
 
     // Home Players
+    console.log("Frames data inside FootballField:", frames);
     const homePlayers = svg.selectAll(".home-player")
-      .data(data.home);
+      //.data(frameData.home);
+      .data(frameData.filter(d => d.team === 'TB'));
       
     homePlayers.enter()
       .append("circle")
@@ -44,8 +44,12 @@ function FootballField() {
 
     homePlayers.exit().remove();
 
+    //testing purposes
+    console.log("Frames data inside FootballField:", frames);
+
     const homeText = svg.selectAll(".home-text")
-      .data(data.home);
+      //.data(frameData.home);
+      .data(frameData.filter(d => d.team === 'TB'));
       
     homeText.enter()
       .append("text")
@@ -58,9 +62,13 @@ function FootballField() {
 
     homeText.exit().remove();
 
+    //Testing purposes
+    console.log("Frames data inside FootballField:", frames);
+
     // Guest Players
     const guestPlayers = svg.selectAll(".guest-player")
-      .data(data.guest);
+      //.data(frameData.guest);
+      .data(frameData.filter(d => d.team === 'DAL'));
 
     guestPlayers.enter()
       .append("circle")
@@ -75,7 +83,7 @@ function FootballField() {
 
     // Football
     const football = svg.selectAll(".football")
-      .data([data.football]);
+      .data([frameData.football]);
 
     football.enter()
       .append("circle")
@@ -88,7 +96,7 @@ function FootballField() {
 
     football.exit().remove();
 
-  }, [data]);
+  }, [frames, currentFrame]);
 
   return <svg ref={svgRef} width={800} height={400} />;
 }

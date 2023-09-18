@@ -3,6 +3,10 @@ import * as d3 from 'd3';
 import FootballField from './components/footballField';
 
 function transformDataForVisualization(data) {
+
+  //test
+  console.log("Data at start of transformation: ", data);
+
   // Group data by frameId
   const groupedByFrame = d3.group(data, d => d.frameId);
 
@@ -39,23 +43,30 @@ function transformDataForVisualization(data) {
 
 function App() {
     const [playData, setPlayData] = useState(null);
-
     useEffect(() => {
-        d3.csv('/path/to/playersData.csv').then(data => {
+        d3.csv('nfl-web/public/playersData.csv').then(data => {
+
+            console.log("Raw Data: ", data);
+
             // Filter data for a specific game and play
-            const specificPlayData = data.filter(d => d.gameId === "someGameId" && d.playId === "somePlayId");
+            const specificPlayData = data.filter(d => d.gameId === "2021090900" && d.playId === "97");
 
             // Transform data for visualization
             const transformedData = transformDataForVisualization(specificPlayData);
 
             setPlayData(transformedData);
+
+            //testing purposes
+            // console.log(transformedData);
+            // console.log(playData);
+            
         });
     }, []);
 
     return (
         <div className="App">
             <h1>Welcome to Our Football Visualization</h1>
-            {playData && <FootballField data={playData} />}
+            {playData && <FootballField frames={playData} />}
         </div>
     );
 }
