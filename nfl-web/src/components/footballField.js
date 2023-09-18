@@ -42,7 +42,7 @@ function FootballField({ frames }) {
     homeText.enter()
       .append("text")
       .attr("class", "home-text")
-      .attr("fill", "white")
+      .attr("fill", "blue")
       .merge(homeText)
       .text(d => d.jerseyNumber)
       .attr("x", d => d.x)

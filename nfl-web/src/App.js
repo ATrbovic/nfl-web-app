@@ -44,7 +44,7 @@ function transformDataForVisualization(data) {
 function App() {
     const [playData, setPlayData] = useState(null);
     useEffect(() => {
-        d3.csv('nfl-web/public/playersData.csv').then(data => {
+        d3.csv('/playersData.csv').then(data => {
 
             console.log("Raw Data: ", data);
 
