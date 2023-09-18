@@ -7,48 +7,65 @@ function FootballField({ data }) {
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-    // ... your D3 visualization code here ...
-  svg.selectAll(".home-player")
-    .data(data.home)
-    .enter()
-    .append("circle")
-    .attr("class", "home-player")
-    .attr("r", 5) // or any suitable size
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .attr("fill", "blue");
 
-  svg.selectAll(".home-player")
-    .data(data.home)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y);
+    // Home Players
+    const homePlayers = svg.selectAll(".home-player")
+      .data(data.home);
+      
+    homePlayers.enter()
+      .append("circle")
+      .attr("class", "home-player")
+      .attr("r", 5)
+      .attr("fill", "blue")
+      .merge(homePlayers) // merge with existing circles
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
 
-  svg.selectAll(".home-player")
-    .data(data.home)
-    .enter()
-    .append("text")
-    .text(d => d.jersey)
-    .attr("x", d => d.x)
-    .attr("y", d => d.y)
-    .attr("fill", "white");
+    homePlayers.exit().remove();
 
-  // Similarly for the guest team (change the class and fill color)
+    const homeText = svg.selectAll(".home-text")
+      .data(data.home);
+      
+    homeText.enter()
+      .append("text")
+      .attr("class", "home-text")
+      .attr("fill", "white")
+      .merge(homeText)
+      .text(d => d.jersey)
+      .attr("x", d => d.x)
+      .attr("y", d => d.y - 7); // adjust y position for visibility
 
-  // For the football
-  svg.selectAll(".football")
-    .data([data.football])
-    .enter()
-    .append("circle")
-    .attr("class", "football")
-    .attr("r", 3)
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y)
-    .attr("fill", "brown");
+    homeText.exit().remove();
 
-  svg.selectAll(".football")
-    .data([data.football])
-    .attr("cx", d => d.x)
-    .attr("cy", d => d.y);
+    // Guest Players (assuming data.guest is your guest team data)
+    const guestPlayers = svg.selectAll(".guest-player")
+      .data(data.guest);
+
+    guestPlayers.enter()
+      .append("circle")
+      .attr("class", "guest-player")
+      .attr("r", 5)
+      .attr("fill", "red")
+      .merge(guestPlayers)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
+
+    guestPlayers.exit().remove();
+
+    // Football
+    const football = svg.selectAll(".football")
+      .data([data.football]);
+
+    football.enter()
+      .append("circle")
+      .attr("class", "football")
+      .attr("r", 3)
+      .attr("fill", "brown")
+      .merge(football)
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
+
+    football.exit().remove();
 
   }, [data]);
 
