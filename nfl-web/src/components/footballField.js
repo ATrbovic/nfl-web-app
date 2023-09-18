@@ -82,7 +82,11 @@ function FootballField({ frames }) {
 
   }, [frames, currentFrame]);
 
-  return <svg ref={svgRef} width={800} height={400} />;
+  return ( 
+  <svg ref={svgRef} width={400} height={800} >
+    <circle cx="50" cy="50" r="5" fill="blue" />
+  </svg>
+  );
 }
 
 export default FootballField;

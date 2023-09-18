@@ -53,8 +53,9 @@ function App() {
 
             // Transform data for visualization
             const transformedData = transformDataForVisualization(specificPlayData);
-
             setPlayData(transformedData);
+
+            //Non transfomred data
 
             //testing purposes
             // console.log(transformedData);
@@ -67,6 +68,7 @@ function App() {
         <div className="App">
             <h1>Welcome to Our Football Visualization</h1>
             {playData && <FootballField frames={playData} />}
+            
         </div>
     );
 }
