@@ -45,11 +45,27 @@ function App() {
     const [playData, setPlayData] = useState(null);
     useEffect(() => {
         d3.csv('/playersData.csv').then(data => {
+          const cleanedData = data.map(d => {
+            return {
+                gameId: d.gameId ? d.gameId.trim() : undefined,
+                playId: d.playId ? d.playId.trim() : undefined,
+                frameId: d.frameId ? d.frameId.trim() : undefined,
+                team: d.team ? d.team.trim() : undefined,
+                nflId: d.nflId ? d.nflId.trim() : undefined,
+                jerseyNumber: d.jerseyNumber ? d.jerseyNumber.trim() : undefined,
+                x: d.x ? d.x.trim() : undefined,
+                y: d.y ? d.y.trim() : undefined
+            }
+        });
 
             console.log("Raw Data: ", data);
+            console.log("Cleaned Data: ", cleanedData);
 
             // Filter data for a specific game and play
             const specificPlayData = data.filter(d => d.gameId === "2021090900" && d.playId === "97");
+
+            //const specificPlayData = cleanedData.filter(d => d.gameId === "2021090900" && d.playId === "97");
+
 
             // Transform data for visualization
             const transformedData = transformDataForVisualization(specificPlayData);
