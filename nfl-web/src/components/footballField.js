@@ -5,22 +5,16 @@ function FootballField({ frames }) {
   const svgRef = useRef();
   const [currentFrame, setCurrentFrame] = useState(0);
 
-  // Cycle through the frames to animate the visualization
   useEffect(() => {
     if (!frames || frames.length === 0) return;
 
     const interval = setInterval(() => {
       setCurrentFrame((prevFrame) => (prevFrame + 1) % frames.length);
-    }, 1000);  // adjust timing as necessary to speed up or slow down the animation
+    }, 1000);  // adjust timing as necessary
 
     return () => clearInterval(interval);
   }, [frames]);
 
-  //testing purposes
-  //console.log(frames);
-
-  
-  // Visualize the data
   useEffect(() => {
     if (!frames || frames.length === 0) return;
 
@@ -28,10 +22,8 @@ function FootballField({ frames }) {
     const svg = d3.select(svgRef.current);
 
     // Home Players
-    console.log("Frames data inside FootballField:", frames);
     const homePlayers = svg.selectAll(".home-player")
-      //.data(frameData.home);
-      .data(frameData.filter(d => d.team === 'TB'));
+      .data(frameData.players.filter(d => d.team === 'TB'));
       
     homePlayers.enter()
       .append("circle")
@@ -44,31 +36,23 @@ function FootballField({ frames }) {
 
     homePlayers.exit().remove();
 
-    //testing purposes
-    console.log("Frames data inside FootballField:", frames);
-
     const homeText = svg.selectAll(".home-text")
-      //.data(frameData.home);
-      .data(frameData.filter(d => d.team === 'TB'));
+      .data(frameData.players.filter(d => d.team === 'TB'));
       
     homeText.enter()
       .append("text")
       .attr("class", "home-text")
       .attr("fill", "white")
       .merge(homeText)
-      .text(d => d.jersey)
+      .text(d => d.jerseyNumber)
       .attr("x", d => d.x)
       .attr("y", d => d.y - 7);
 
     homeText.exit().remove();
 
-    //Testing purposes
-    console.log("Frames data inside FootballField:", frames);
-
     // Guest Players
     const guestPlayers = svg.selectAll(".guest-player")
-      //.data(frameData.guest);
-      .data(frameData.filter(d => d.team === 'DAL'));
+      .data(frameData.players.filter(d => d.team === 'DAL'));
 
     guestPlayers.enter()
       .append("circle")
