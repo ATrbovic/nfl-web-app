@@ -1,10 +1,31 @@
-// components/FootballField.js
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
 
-function FootballField({ data }) {
+function FootballField() {
   const svgRef = useRef();
+  const [data, setData] = useState({ home: [], guest: [], football: {} });
 
+  // Fetch the data
+  useEffect(() => {
+    d3.csv("/playersData.csv").then((loadedData) => {
+      let homeData = [];
+      let guestData = [];
+      let footballData = {};
+
+      loadedData.forEach(d => {
+        d.x = +d.x; // Convert to number
+        d.y = +d.y; // Convert to number
+
+        if (d.team === "home") homeData.push(d);
+        else if (d.team === "guest") guestData.push(d);
+        else if (d.team === "football") footballData = d;
+      });
+
+      setData({ home: homeData, guest: guestData, football: footballData });
+    });
+  }, []);
+
+  // Visualize the data
   useEffect(() => {
     const svg = d3.select(svgRef.current);
 
@@ -17,7 +38,7 @@ function FootballField({ data }) {
       .attr("class", "home-player")
       .attr("r", 5)
       .attr("fill", "blue")
-      .merge(homePlayers) // merge with existing circles
+      .merge(homePlayers)
       .attr("cx", d => d.x)
       .attr("cy", d => d.y);
 
@@ -33,11 +54,11 @@ function FootballField({ data }) {
       .merge(homeText)
       .text(d => d.jersey)
       .attr("x", d => d.x)
-      .attr("y", d => d.y - 7); // adjust y position for visibility
+      .attr("y", d => d.y - 7);
 
     homeText.exit().remove();
 
-    // Guest Players (assuming data.guest is your guest team data)
+    // Guest Players
     const guestPlayers = svg.selectAll(".guest-player")
       .data(data.guest);
 
