@@ -84,7 +84,10 @@ function App() {
 
     return (
         <div className="App">
+            <header>
             <h1>Welcome to Our Football Visualization</h1>
+            <p>Test</p>
+            </header>
             {playData && <FootballField frames={playData} />}
             
         </div>
