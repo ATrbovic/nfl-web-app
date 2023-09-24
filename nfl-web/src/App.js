@@ -63,9 +63,13 @@ function App() {
             console.log("Raw Data: ", data);
             console.log("Cleaned Data: ", cleanedData);
 
-            // Filter data for a specific game and play
-            const specificPlayData = data.filter(d => d.gameId === "2021090900" && d.playId === "97");
+            // Filter data for a specific game and play (original data)
+            //const specificPlayData = data.filter(d => d.gameId === "2021090900" && d.playId === "97");
 
+            //testing purposes
+            data = data.filter(d => d && d.gameId && d.playId && d.nflId && d.frameId && d.jerseyNumber && d.team && d.playDirection && d.x && d.y &&
+                d.s && d.a && d.dis && d.o && d.dir && d.event && d.possessionTeam && d.defensiveTeam && d.pssResult && d.gameDate && d.homeTeamAbbr && d.visitorTeamAbbr );  // Filter out rows where essential fields are falsy
+            const specificPlayData = cleanedData.filter(d => d.gameId === "2021090900" && d.playId === "97");
             //const specificPlayData = cleanedData.filter(d => d.gameId === "2021090900" && d.playId === "97");
 
 
