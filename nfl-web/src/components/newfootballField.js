@@ -33,7 +33,6 @@ const FootballField = ({ frames }) => {
         console.log(val);
 
         
-
         const frameData = frames[currentFrame];
         if (frameData) {
 
