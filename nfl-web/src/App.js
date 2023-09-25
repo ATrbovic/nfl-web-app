@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
-import FootballField from './components/footballField';
+//d3.js solution
+//import FootballField from './components/footballField';
+import FootballField from './components/newfootballField';
 
 //Control Panel drop down menu
 
@@ -10,7 +12,10 @@ function transformDataForVisualization(data) {
   console.log("Data at start of transformation: ", data);
 
   // Group data by frameId
-  const groupedByFrame = d3.group(data, d => d.frameId);
+  //const width = 1000;
+  const groupedByFrame = d3.group(data, d => d.frameId)
+  
+  //.sacleLinear().domain([0, d3.max(data)]).range([0, width]); // Output range (typically screen or SVG width);
 
   // Transform data
   const transformedData = Array.from(groupedByFrame.entries()).map(([frameId, entries]) => {
@@ -47,7 +52,10 @@ function App() {
     const [playData, setPlayData] = useState(null);
     useEffect(() => {
         d3.csv('/playersData.csv').then(data => {
+            console.log(data);
+            
           const cleanedData = data.map(d => {
+            console.log(d);
             return {
                 gameId: d.gameId ? d.gameId.trim() : undefined,
                 playId: d.playId ? d.playId.trim() : undefined,
@@ -62,6 +70,7 @@ function App() {
 
             console.log("Raw Data: ", data);
             console.log("Cleaned Data: ", cleanedData);
+            
 
             // Filter data for a specific game and play (original data)
             //const specificPlayData = data.filter(d => d.gameId === "2021090900" && d.playId === "97");
@@ -96,3 +105,4 @@ function App() {
 }
 
 export default App;
+//{playData && <FootballField frames={playData} />}

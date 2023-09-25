@@ -19,20 +19,32 @@ function FootballField({ frames }) {
     if (!frames || frames.length === 0) return;
 
     const frameData = frames[currentFrame];
-    const svg = d3.select(svgRef.current);
+
+    //test
+    console.log("Frame Data:", frameData);
+    
+    const svg = d3.select(svgRef.current) ;
+    
+    const xScale = d3.scaleLinear()
+    .domain([0, 100]) // Assuming data x-values are between 0 and 100; modify accordingly
+    .range([0, 500]); // SVG width
+
+    const yScale = d3.scaleLinear()
+      .domain([0, 100]) // Assuming data y-values are between 0 and 100; modify accordingly
+      .range([0, 500]); // SVG height
 
     // Home Players
     const homePlayers = svg.selectAll(".home-player")
-      .data(frameData.players.filter(d => d.team === 'TB'));
-      
+    
+    
     homePlayers.enter()
       .append("circle")
       .attr("class", "home-player")
       .attr("r", 5)
-      .attr("fill", "blue")
+      .attr("fill", "red")
       .merge(homePlayers)
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+      .attr("cx", d => xScale(d.x)) // Use the scale for x
+      .attr("cy", d => yScale(d.y));
 
     homePlayers.exit().remove();
 
@@ -50,7 +62,7 @@ function FootballField({ frames }) {
 
     homeText.exit().remove();
 
-    // Guest Players
+    //Guest Players
     const guestPlayers = svg.selectAll(".guest-player")
       .data(frameData.players.filter(d => d.team === 'DAL'));
 
@@ -60,8 +72,10 @@ function FootballField({ frames }) {
       .attr("r", 5)
       .attr("fill", "red")
       .merge(guestPlayers)
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+      // .attr("cx", d => d.x)
+      // .attr("cy", d => d.y);
+      .attr("cx", d => xScale(d.x)) // Use the scale for x
+      .attr("cy", d => yScale(d.y));
 
     guestPlayers.exit().remove();
 
@@ -75,16 +89,18 @@ function FootballField({ frames }) {
       .attr("r", 3)
       .attr("fill", "brown")
       .merge(football)
-      .attr("cx", d => d.x)
-      .attr("cy", d => d.y);
+      // .attr("cx", d => d.x)
+      // .attr("cy", d => d.y);
+      .attr("cx", d => xScale(d.x)) // Use the scale for x
+      .attr("cy", d => yScale(d.y));
 
     football.exit().remove();
 
   }, [frames, currentFrame]);
 
   return ( 
-  <svg ref={svgRef} width={400} height={800} >
-    <circle cx="50" cy="50" r="5" fill="blue" />
+  <svg ref={svgRef} width={1000} height={800} >
+    
   </svg>
   );
 }
