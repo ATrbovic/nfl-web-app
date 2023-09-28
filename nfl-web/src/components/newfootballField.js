@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import p5 from 'p5';
 
+//Function to change the speed think youtube .25, .50 etc etc
+//Provide four buttons to change speed vaue .25 .50 1x 2x
+//Drop down menus to choose year, game, play
+
+//Add FSU, NSF, Industrial engineering logo to header/sponsors
+
+//think about how to process files as images
 const FootballField = ({ frames }) => {
   const myP5 = useRef();
   
@@ -73,3 +80,4 @@ const FootballField = ({ frames }) => {
 };
 
 export default FootballField;
+
