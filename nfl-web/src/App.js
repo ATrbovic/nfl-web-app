@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
+
 //d3.js solution
 //import FootballField from './components/footballField';
 import FootballField from './components/newfootballField';
@@ -70,7 +71,6 @@ function App() {
 
             console.log("Raw Data: ", data);
             console.log("Cleaned Data: ", cleanedData);
-            
 
             // Filter data for a specific game and play (original data)
             //const specificPlayData = data.filter(d => d.gameId === "2021090900" && d.playId === "97");
@@ -100,9 +100,15 @@ function App() {
             <h1>Welcome to Our Football Visualization</h1>
             {playData && <FootballField frames={playData} />}
             
+            
         </div>
     );
 }
+
+//features to add
+//Header component - Logos - NSF, FSU, Industrial engineering, Button to go home and to team page
+//teams page - Members name, Major, Picture, Maybe a bio - for the future
+
 
 export default App;
 //{playData && <FootballField frames={playData} />}
