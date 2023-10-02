@@ -10,16 +10,14 @@ import p5 from 'p5';
 
 const FootballField = ({ frames }) => {
   const myP5 = useRef();
-  const [speed, setSpeed] = useState(1);  // New state variable
+  const [speed, setSpeed] = useState(1);
+  const [shouldSave, setShouldSave] = useState(false);  // New state to control saving
 
-  const [year, setYear] = useState('');  // New state for year
-  const [homeTeam, setHomeTeam] = useState('');  // New state for home team
-  const [awayTeam, setAwayTeam] = useState('');  // New state for away team
-  const [play, setPlay] = useState('');  // New state for play
+  const [year, setYear] = useState('');
+  const [homeTeam, setHomeTeam] = useState('');
+  const [awayTeam, setAwayTeam] = useState('');
+  const [play, setPlay] = useState('');
 
-  const [isCapturing, setIsCapturing] = useState(false);// New state for capturing
-  const [framesCaptured, setFramesCaptured] = useState(0);// New state for frames captured
-  
   useEffect(() => {
     let mySketch = (p) => {
       let currentFrame = 0;
@@ -32,17 +30,13 @@ const FootballField = ({ frames }) => {
       p.draw = () => {
         p.background(255); 
         p.text('Frame rate: '+ Math.floor(p.getFrameRate()),95,500);
-
-        // Adjust frameRate based on speed
         p.frameRate(30 * speed);
 
         const frameData = frames[currentFrame];
         if (frameData) {
-          // Scale x and y coordinates
           const xScale = (x) => p.map(x, 0, 100, 0, 1000);
           const yScale = (y) => p.map(y, 0, 100, 0, 800);
 
-          // Draw players
           frameData.players.forEach(d => {
             if (d.team === 'TB') {
               p.fill('blue');
@@ -55,39 +49,44 @@ const FootballField = ({ frames }) => {
             }
           });
 
-          // Draw football
           if (frameData.football) {
             p.fill('brown');
             p.ellipse(xScale(frameData.football.x), yScale(frameData.football.y), 6, 6);
           }
         }
+
         currentFrame = (currentFrame + 1) % frames.length;
-        p.saveImage();
-      };
-      p.saveImage = () => {
-        if (isCapturing && framesCaptured < 10) {
-          p.saveCanvas(`frame_${currentFrame}.jpg`, 'jpg');
-          setFramesCaptured(prev => prev + 1);
-      
-          if (framesCaptured >= 9) {
-            setIsCapturing(false);
-            setFramesCaptured(0);
-          }
+        if (shouldSave) {
+          p.saveImage();
+          setShouldSave(false); // Reset the save flag
         }
+      };
+
+      p.saveImage = () => {
+        console.log("Saving Image:", `frame_${currentFrame}.jpg`);
+        p.saveCanvas(`frame_${currentFrame}.jpg`, 'jpg');
       };
     };
 
     myP5.current = new p5(mySketch);
     return () => { myP5.current.remove(); };
-  }, [frames, speed]);  // Add speed to dependency list
+  }, [frames, speed, shouldSave]);  // Include shouldSave in the dependency list
 
   const handleSaveImage = () => {
-    myP5.current.saveImage();
+    setShouldSave(true);
   };
 
   const handleCaptureFrames = () => {
-    setIsCapturing(true);
- };
+    let captures = 0;
+    const captureInterval = setInterval(() => {
+      if (captures < 10) {
+        setShouldSave(true);
+        captures++;
+      } else {
+        clearInterval(captureInterval);
+      }
+    }, 100);
+  };
 
   return (
     <div>
