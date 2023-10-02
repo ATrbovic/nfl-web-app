@@ -17,9 +17,7 @@ const FootballField = ({ frames }) => {
   const [awayTeam, setAwayTeam] = useState('');  // New state for away team
   const [play, setPlay] = useState('');  // New state for play
 
-  const [isPlaying, setIsPlaying] = useState(true); // State for play/pause
-
-  const [currentFrame, setCurrentFrame] = useState(0);// State for current frame
+ 
 
   useEffect(() => {
     let mySketch = (p) => {
@@ -29,43 +27,41 @@ const FootballField = ({ frames }) => {
         p.frameRate(30);
         p.createCanvas(1000, 800);
       };
+
       p.draw = () => {
-        if (isPlaying) { // Check if the animation should play
-          p.background(255); 
-          p.text('Frame rate: '+ Math.floor(p.getFrameRate()), 95, 500);
-      
-          // Adjust frameRate based on speed
-          p.frameRate(30 * speed);
-      
-          const frameData = frames[currentFrame];
-          if (frameData) {
-            // Scale x and y coordinates
-            const xScale = (x) => p.map(x, 0, 100, 0, 1000);
-            const yScale = (y) => p.map(y, 0, 100, 0, 800);
-      
-            // Draw players
-            frameData.players.forEach(d => {
-              if (d.team === 'TB') {
-                p.fill('blue');
-                p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
-                p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
-              } else {
-                p.fill('red');
-                p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
-                p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
-              }
-            });
-      
-            // Draw football
-            if (frameData.football) {
-              p.fill('brown');
-              p.ellipse(xScale(frameData.football.x), yScale(frameData.football.y), 6, 6);
+        p.background(255); 
+        p.text('Frame rate: '+ Math.floor(p.getFrameRate()),95,500);
+
+        // Adjust frameRate based on speed
+        p.frameRate(30 * speed);
+
+        const frameData = frames[currentFrame];
+        if (frameData) {
+          // Scale x and y coordinates
+          const xScale = (x) => p.map(x, 0, 100, 0, 1000);
+          const yScale = (y) => p.map(y, 0, 100, 0, 800);
+
+          // Draw players
+          frameData.players.forEach(d => {
+            if (d.team === 'TB') {
+              p.fill('blue');
+              p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
+              p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
+            } else {
+              p.fill('red');
+              p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
+              p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
             }
+          });
+
+          // Draw football
+          if (frameData.football) {
+            p.fill('brown');
+            p.ellipse(xScale(frameData.football.x), yScale(frameData.football.y), 6, 6);
           }
-          currentFrame = (currentFrame + 1) % frames.length;
         }
+        currentFrame = (currentFrame + 1) % frames.length;
       };
-      
       p.saveImage = () => {
         p.saveCanvas(`frame_${currentFrame}.jpg`, 'jpg');
       };
@@ -73,25 +69,14 @@ const FootballField = ({ frames }) => {
 
     myP5.current = new p5(mySketch);
     return () => { myP5.current.remove(); };
-  }, [frames, speed, isPlaying]);  // Add speed to dependency list
+  }, [frames, speed]);  // Add speed to dependency list
 
-  //save image function
   const handleSaveImage = () => {
     myP5.current.saveImage();
   };
 
-  //play pause function
-  const togglePlayPause = () => {
-    setIsPlaying(!isPlaying); // Toggle between play and pause
-  };
-
   return (
     <div>
-      {/* Play/Pause Button */}
-      <button onClick={togglePlayPause}>
-        {isPlaying ? "Pause" : "Play"}
-      </button>
-
       {/* Save Image Button */}
       <button onClick={handleSaveImage}>Save Image</button>
 
@@ -139,4 +124,5 @@ const FootballField = ({ frames }) => {
 };
 
 export default FootballField;
+
 
