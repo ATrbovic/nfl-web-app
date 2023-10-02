@@ -11,6 +11,11 @@ const FootballField = ({ frames }) => {
   const myP5 = useRef();
   const [speed, setSpeed] = useState(1);  // New state variable
 
+  const [year, setYear] = useState('');  // New state for year
+  const [homeTeam, setHomeTeam] = useState('');  // New state for home team
+  const [awayTeam, setAwayTeam] = useState('');  // New state for away team
+  const [play, setPlay] = useState('');  // New state for play
+
   useEffect(() => {
     let mySketch = (p) => {
       let currentFrame = 0;
@@ -67,6 +72,38 @@ const FootballField = ({ frames }) => {
       <button onClick={() => setSpeed(0.5)}>0.5x</button>
       <button onClick={() => setSpeed(1)}>1x</button>
       <button onClick={() => setSpeed(2)}>2x</button>
+
+      {/* Dropdown for Year */}
+      <select value={year} onChange={(e) => setYear(e.target.value)}>
+        <option value="">Select Year</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        {/* Add more years as needed */}
+      </select>
+
+      {/* Dropdown for Home Team */}
+      <select value={homeTeam} onChange={(e) => setHomeTeam(e.target.value)}>
+        <option value="">Select Home Team</option>
+        <option value="TB">TB</option>
+        <option value="DAL">DAL</option>
+        {/* Add more teams as needed */}
+      </select>
+
+      {/* Dropdown for Away Team */}
+      <select value={awayTeam} onChange={(e) => setAwayTeam(e.target.value)}>
+        <option value="">Select Away Team</option>
+        <option value="TB">TB</option>
+        <option value="DAL">DAL</option>
+        {/* Add more teams as needed */}
+      </select>
+
+      {/* Dropdown for Play */}
+      <select value={play} onChange={(e) => setPlay(e.target.value)}>
+        <option value="">Select Play</option>
+        <option value="play1">Play 1</option>
+        <option value="play2">Play 2</option>
+        {/* Add more plays as needed */}
+      </select>
 
       {/* p5.js will attach canvas here */}
     </div>
