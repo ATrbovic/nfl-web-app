@@ -17,8 +17,9 @@ const FootballField = ({ frames }) => {
   const [awayTeam, setAwayTeam] = useState('');  // New state for away team
   const [play, setPlay] = useState('');  // New state for play
 
- 
-
+  const [isCapturing, setIsCapturing] = useState(false);// New state for capturing
+  const [framesCaptured, setFramesCaptured] = useState(0);// New state for frames captured
+  
   useEffect(() => {
     let mySketch = (p) => {
       let currentFrame = 0;
@@ -61,9 +62,18 @@ const FootballField = ({ frames }) => {
           }
         }
         currentFrame = (currentFrame + 1) % frames.length;
+        p.saveImage();
       };
       p.saveImage = () => {
-        p.saveCanvas(`frame_${currentFrame}.jpg`, 'jpg');
+        if (isCapturing && framesCaptured < 10) {
+          p.saveCanvas(`frame_${currentFrame}.jpg`, 'jpg');
+          setFramesCaptured(prev => prev + 1);
+      
+          if (framesCaptured >= 9) {
+            setIsCapturing(false);
+            setFramesCaptured(0);
+          }
+        }
       };
     };
 
@@ -75,8 +85,16 @@ const FootballField = ({ frames }) => {
     myP5.current.saveImage();
   };
 
+  const handleCaptureFrames = () => {
+    setIsCapturing(true);
+ };
+
   return (
     <div>
+
+      {/* Capture multiple Frames Button */}
+      <button onClick={handleCaptureFrames}>Capture 10 Frames</button>
+
       {/* Save Image Button */}
       <button onClick={handleSaveImage}>Save Image</button>
 
