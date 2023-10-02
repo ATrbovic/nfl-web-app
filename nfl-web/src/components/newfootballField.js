@@ -16,6 +16,8 @@ const FootballField = ({ frames }) => {
   const [awayTeam, setAwayTeam] = useState('');  // New state for away team
   const [play, setPlay] = useState('');  // New state for play
 
+ 
+
   useEffect(() => {
     let mySketch = (p) => {
       let currentFrame = 0;
@@ -59,14 +61,24 @@ const FootballField = ({ frames }) => {
         }
         currentFrame = (currentFrame + 1) % frames.length;
       };
+      p.saveImage = () => {
+        p.saveCanvas(`frame_${currentFrame}.jpg`, 'jpg');
+      };
     };
 
     myP5.current = new p5(mySketch);
     return () => { myP5.current.remove(); };
   }, [frames, speed]);  // Add speed to dependency list
 
+  const handleSaveImage = () => {
+    myP5.current.saveImage();
+  };
+
   return (
     <div>
+      {/* Save Image Button */}
+      <button onClick={handleSaveImage}>Save Image</button>
+
       {/* Speed Control Buttons */}
       <button onClick={() => setSpeed(0.25)}>0.25x</button>
       <button onClick={() => setSpeed(0.5)}>0.5x</button>
