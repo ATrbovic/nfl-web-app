@@ -4,51 +4,35 @@
 
 //Add FSU, NSF, Industrial engineering logo to header/sponsors
 //think about how to process files as images
-
 import React, { useEffect, useState, useRef } from 'react';
 import p5 from 'p5';
 
 const FootballField = ({ frames }) => {
   const myP5 = useRef();
-  
+  const [speed, setSpeed] = useState(1);  // New state variable
+
   useEffect(() => {
     let mySketch = (p) => {
       let currentFrame = 0;
-      let slider = 0;
-      setInterval(function() { if (slider.value()<1){
-          p.noLoop();
-        } else {
-          p.loop();
-        }}, 10);
 
       p.setup = () => {
-        p.frameRate(30)//adjust to change fps
+        p.frameRate(30);
         p.createCanvas(1000, 800);
-        slider = p.createSlider(0.1, 100,10);
-        slider.position(100, 500);
-        slider.style('width', '80px');
-        
       };
-  
+
       p.draw = () => {
-        
-        console.log(currentFrame)
-        p.background(255); // Set background color
-        p.text('Frame rate: '+ Math.floor(p.getFrameRate()),95,500)
+        p.background(255); 
+        p.text('Frame rate: '+ Math.floor(p.getFrameRate()),95,500);
 
-        let val = slider.value();
-        
-        p.frameRate(slider.value())
-        console.log(val);
+        // Adjust frameRate based on speed
+        p.frameRate(30 * speed);
 
-        
         const frameData = frames[currentFrame];
         if (frameData) {
-
           // Scale x and y coordinates
           const xScale = (x) => p.map(x, 0, 100, 0, 1000);
           const yScale = (y) => p.map(y, 0, 100, 0, 800);
-  
+
           // Draw players
           frameData.players.forEach(d => {
             if (d.team === 'TB') {
@@ -60,27 +44,33 @@ const FootballField = ({ frames }) => {
               p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
               p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
             }
-      
           });
-  
+
           // Draw football
           if (frameData.football) {
             p.fill('brown');
             p.ellipse(xScale(frameData.football.x), yScale(frameData.football.y), 6, 6);
           }
         }
-        currentFrame = currentFrame+1 % frames.length;
+        currentFrame = (currentFrame + 1) % frames.length;
       };
     };
+
     myP5.current = new p5(mySketch);
     return () => { myP5.current.remove(); };
-  }, [frames]);
+  }, [frames, speed]);  // Add speed to dependency list
+
   return (
     <div>
+      {/* Speed Control Buttons */}
+      <button onClick={() => setSpeed(0.25)}>0.25x</button>
+      <button onClick={() => setSpeed(0.5)}>0.5x</button>
+      <button onClick={() => setSpeed(1)}>1x</button>
+      <button onClick={() => setSpeed(2)}>2x</button>
+
       {/* p5.js will attach canvas here */}
     </div>
   );
 };
 
 export default FootballField;
-
