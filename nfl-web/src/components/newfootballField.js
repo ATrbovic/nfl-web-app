@@ -37,21 +37,37 @@ const FootballField = ({ frames }) => {
           const xScale = (x) => p.map(x, 0, 100, 0, 1000);
           const yScale = (y) => p.map(y, 0, 100, 0, 800);
 
+          // frameData.players.forEach(d => {
+          //   if (d.team === 'TB') {
+          //     p.fill('blue');
+          //     p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
+          //     p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
+          //   } else {
+          //     p.fill('red');
+          //     p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
+          //     p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
+          //   }
+          // });
           frameData.players.forEach(d => {
+            const x = xScale(d.x);
+            const y = yScale(d.y);
             if (d.team === 'TB') {
               p.fill('blue');
-              p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
-              p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
             } else {
               p.fill('red');
-              p.ellipse(xScale(d.x), yScale(d.y), 10, 10);
-              p.text(d.jerseyNumber, xScale(d.x), yScale(d.y) - 7);
             }
+            p.ellipse(x, y, 20, 20);
+          
+            // Adjust text alignment and position
+            p.fill(255);  // white color for text
+            p.textAlign(p.CENTER, p.CENTER);  // center both horizontally and vertically
+            p.text(d.jerseyNumber, x, y);
           });
+          
 
           if (frameData.football) {
             p.fill('brown');
-            p.ellipse(xScale(frameData.football.x), yScale(frameData.football.y), 6, 6);
+            p.ellipse(xScale(frameData.football.x), yScale(frameData.football.y), 9, 6);
           }
         }
 
