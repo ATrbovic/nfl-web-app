@@ -52,7 +52,11 @@ function transformDataForVisualization(data) {
 function App() {
     const [playData, setPlayData] = useState(null);
     useEffect(() => {
-        d3.csv('/playersData.csv').then(data => {
+        //d3.csv('/playersData.csv').then(data => {
+        //2022 test
+        //d3.csv('/2022Test.csv').then(data => {
+        //2022 test 74 fps
+        d3.csv('/202274Test.csv').then(data => {
             console.log(data);
             
           const cleanedData = data.map(d => {
@@ -78,7 +82,11 @@ function App() {
             //testing purposes
             data = data.filter(d => d && d.gameId && d.playId && d.nflId && d.frameId && d.jerseyNumber && d.team && d.playDirection && d.x && d.y &&
                 d.s && d.a && d.dis && d.o && d.dir && d.event && d.possessionTeam && d.defensiveTeam && d.pssResult && d.gameDate && d.homeTeamAbbr && d.visitorTeamAbbr );  // Filter out rows where essential fields are falsy
-            const specificPlayData = cleanedData.filter(d => d.gameId === "2021090900" && d.playId === "97");
+            //2022 test
+            //const specificPlayData = cleanedData.filter(d => d.gameId === "2022090800" && d.playId === "56");
+            //2022 test 74 fps
+            const specificPlayData = cleanedData.filter(d => d.gameId === "2022090800" && d.playId === "2072");
+            //2021 working    
             //const specificPlayData = cleanedData.filter(d => d.gameId === "2021090900" && d.playId === "97");
 
 

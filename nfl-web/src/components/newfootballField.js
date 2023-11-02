@@ -51,7 +51,7 @@ const FootballField = ({ frames }) => {
           frameData.players.forEach(d => {
             const x = xScale(d.x);
             const y = yScale(d.y);
-            if (d.team === 'TB') {
+            if (d.team === 'TB' || d.team === 'BUF') {
               p.fill('blue');
             } else {
               p.fill('red');
