@@ -120,3 +120,39 @@ function App() {
 
 export default App;
 //{playData && <FootballField frames={playData} />}
+
+
+//Dynamic function APP()
+// function App() {
+//     const [playData, setPlayData] = useState(null);
+
+//     useEffect(() => {
+//         fetch('/api/twenytwoWeekone') // The API endpoint you set up in your backend.
+//             .then(response => response.json())
+//             .then(data => {
+//                 console.log("Raw Data: ", data);
+
+//                 const cleanedData = data.map(d => {
+//                     return {
+//                         gameId: d.gameId ? d.gameId.trim() : undefined,
+//                         playId: d.playId ? d.playId.trim() : undefined,
+//                         frameId: d.frameId ? d.frameId.trim() : undefined,
+//                         team: d.team ? d.team.trim() : undefined,
+//                         nflId: d.nflId ? d.nflId.trim() : undefined,
+//                         jerseyNumber: d.jerseyNumber ? d.jerseyNumber.trim() : undefined,
+//                         x: d.x ? d.x.trim() : undefined,
+//                         y: d.y ? d.y.trim() : undefined
+//                     }
+//                 });
+
+//                 console.log("Cleaned Data: ", cleanedData);
+
+//                 const specificPlayData = cleanedData.filter(d => d.gameId === "2022090800" && d.playId === "2072");
+//                 const transformedData = transformDataForVisualization(specificPlayData);
+//                 setPlayData(transformedData);
+//             })
+//             .catch(error => {
+//                 console.error("Error fetching data from backend:", error);
+//             });
+//     }, []);
+// }
